@@ -1,3 +1,8 @@
+"""
+21.py: 
+Patch: https://github.com/pytorch/pytorch/commit/071971476d7431a24e527bdc181981678055a95d 
+Problem: Binomial distribution class encounters overflow when logits are large. Note: the binomial distribution is parametrized by logits
+"""
 import torch
 import pandas as pd
 from numbers import Number

@@ -1,3 +1,13 @@
+"""
+2.py: 
+Patch: https://github.com/pytorch/pytorch/commit/dfc7fa03e5d33f909b9d7853dd001086f5d782a0 
+Problem: Matrix inverse is numerically unstable, as a result numerical and analytical gradients for LU decomposition are too different. 
+gradients for the LU decomposition calculation is unstable, lu_backward is impelemented as autograd torch.det is using LU in forward, 
+while det_backward is using svd_backward (singular value decomposition). 
+The issue with svd_backward is that it is only stable for inputs with distinct singular values. 
+As a result, TestGradientsCuda::test_fn_gradgrad_linalg_det_cuda_float64 fails on Windows with GPU, which compares the numerical and analytical gradient. 
+SVD_backward is only stable for ranks n - 1 <= r <= n with singular values sufficiently far away from each other.
+"""
 import torch
 import pandas as pd
 

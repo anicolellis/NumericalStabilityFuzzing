@@ -1,3 +1,8 @@
+"""
+25.py:
+Patch: https://github.com/pytorch/pytorch/commit/f8cab38578a99ad04d23256c2da877db4814f76f 
+Problem: Matrix inverse triggers a cholesky error, because the matrix is not positive definite. Also, matrix inverse can cause numerical instability.
+"""
 import torch
 import pandas as pd
 from pyfuzz.fuzzers import *

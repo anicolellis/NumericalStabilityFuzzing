@@ -1,3 +1,8 @@
+"""
+20.py: (INCOMPLETE) 
+Patch: https://github.com/pytorch/pytorch/commit/470c496eb224bdd735eea1accf7269dfdd87d49f 
+Problem: In multivariate normal distribution class, there is a function for computing the precision matrix that uses inverse, which is numerically unstable
+"""
 import torch
 import math
 import torch

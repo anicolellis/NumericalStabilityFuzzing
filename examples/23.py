@@ -1,4 +1,14 @@
+"""
+23.py: (INCOMPLETE) 
+Patch: https://github.com/pytorch/pytorch/commit/d16c8238e164c6499714de625eb73422382e5ec1 
+Problem: Implementation of softmax for certain cases (when the dim argument of softmax and axis do not equal to ndim - 1, where ndim - 1 = the last dimension) is numerically unstable. 
+Large inputs into the exponential function will produce infinity and output of softmax becomes NaN.
+"""
 import torch.onnx.symbolic_helper as sym_help
+import pandas as pd
+from pyfuzz.fuzzers import *
+from pyfuzz.byte_mutations import *
+from pyfuzz.fuzz_data_interpreter import *
 
 def unstable_softmax(g, input, dim, dtype=None):
     input_dim = input.type().dim()
