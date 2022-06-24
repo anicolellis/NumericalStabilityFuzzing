@@ -32,6 +32,8 @@ def unstable_softmax(g, input, dim, dtype=None):
 def stable_softmax(g, input, dim, dtype=None):
     input_dim = input.type().dim()
     if input_dim is not None:
+        if dim < 0:
+            dim = input_dim + dim
         is_transpose_required = (input_dim != dim + 1)
 
         if is_transpose_required:

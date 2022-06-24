@@ -58,7 +58,7 @@ def deepstability2(data):
     fdi = FuzzedDataInterpreter(data)
 
     matrix_size = 3
-    
+    """
     test_input = torch.FloatTensor([
       [fdi.claim_float() for _ in range(matrix_size)] ,
       [fdi.claim_float() for _ in range(matrix_size)] ,
@@ -71,15 +71,23 @@ def deepstability2(data):
       [fdi.claim_float() for _ in range(matrix_size)]
     ])
 
-    pred_s, _, _ = stable_backward(test_input, grad_input)
+    print(test_input)
 
-    return pred_s
+    print(grad_input)
+    """
+    for _ in range(9):
+      print('Number:', fdi.claim_float())
+    return
+
+    #pred_s, _, _ = stable_backward(test_input, grad_input)
+
+    #return pred_s
 
 def deepstability2_unstable(data):
     fdi = FuzzedDataInterpreter(data)
 
     matrix_size = 3
-    
+    """
     test_input = torch.FloatTensor([
       [fdi.claim_float() for _ in range(matrix_size)] ,
       [fdi.claim_float() for _ in range(matrix_size)] ,
@@ -87,14 +95,22 @@ def deepstability2_unstable(data):
     ])
 
     grad_input = torch.FloatTensor([
-      [fdi.claim_float() for _ in range(matrix_size)] ,
-      [fdi.claim_float() for _ in range(matrix_size)] ,
-      [fdi.claim_float() for _ in range(matrix_size)]
+      [fdi.claim_float(), fdi.claim_float(), fdi.claim_float()] ,
+      [fdi.claim_float(), fdi.claim_float(), fdi.claim_float()] ,
+      [fdi.claim_float(), fdi.claim_float(), fdi.claim_float()]
     ])
 
-    pred_u, _, _ = unstable_backward(test_input, grad_input)
+    print(test_input)
 
-    return pred_u
+    print(grad_input)
+    """
+    for _ in range(2):
+      print('Number:', fdi.claim_float())
+    return
+
+    #pred_u, _, _ = unstable_backward(test_input, grad_input)
+
+    #return pred_u
 
 
 if __name__ == "__main__":
@@ -109,6 +125,8 @@ if __name__ == "__main__":
     print(fuzzer.failure_cases)
 
     runner = FunctionRunner(deepstability2_unstable)
+    seed = [bytearray([0] * 12)]
+    fuzzer = MutationFuzzer(seed, mutator=mutate_bytes)
     results = fuzzer.runs(runner, 1000)
 
     df = pd.DataFrame(results, columns=["output", "status"])
